@@ -1,25 +1,27 @@
 import styled from "styled-components";
-import Movies from "./Movies";
+import Navbar from "./components/Navbar";
+import ExplorePage from "./ExplorePage";
+// import Movies from "./ExplorePage";
+
+
 
 function App() {
   return (
     <>
-      <ScreenHeader>
-        <h1>CINEFLEX</h1>
-      </ScreenHeader>
+      <Navbar />
 
       <TextCoontainer>
         <p>Selecione o filme</p>
 
       </TextCoontainer>
-
       <ScreenContainer>
 
+        <ExplorePage />
+        {/* <Movies />
         <Movies />
         <Movies />
         <Movies />
-        <Movies />
-        <Movies />
+        <Movies /> */}
 
       </ScreenContainer>
 
@@ -32,29 +34,17 @@ function App() {
 export default App;
 
 
-const ScreenHeader = styled.div`
-  background-color:#C3CFD9;
-  display:flex;
-  justify-content: center;
-    h1{
-      font-family:'Roboto';
-      font-size:34px;
-      font-Weigth:400;
-      color:#E8833A;
-      padding: 20px 0 20px 0;
-    }
-`
 
 const ScreenContainer = styled.div`
     min-width:100vw;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     align-items: center;
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
     
     `
-const TextCoontainer = styled.p`
+const TextCoontainer = styled.div`
     font-size:24px;
     font-family: 'Roboto';
     padding: 20px 0 20px 0;
