@@ -1,57 +1,26 @@
-import styled from "styled-components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import ExplorePage from "./ExplorePage";
-// import Movies from "./ExplorePage";
-
-
+import SessionsPage from "./components/SessionsPage";
+import HomePage from "./components/HomePage";
+import SeatsPage from "./components/SeatsPage";
+// import SuccessPage from "./components/SuccessPage"
 
 function App() {
   return (
     <>
-      <Navbar />
-
-      <TextCoontainer>
-        <p>Selecione o filme</p>
-
-      </TextCoontainer>
-      <ScreenContainer>
-
-        <ExplorePage />
-        {/* <Movies />
-        <Movies />
-        <Movies />
-        <Movies />
-        <Movies /> */}
-
-      </ScreenContainer>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/sessoes/:idFilme" element={<SessionsPage />} />
+          <Route path="/assentos/:idSessao" element={<SeatsPage />} />
+          {/* <Route path="/sucesso" element={<SuccessPage />} /> */}
+        </Routes>
+        <SessionsPage />
+      </BrowserRouter>
 
     </>
   );
 }
 
-
-
 export default App;
-
-
-
-const ScreenContainer = styled.div`
-    min-width:100vw;
-    /* min-height: 100vh; */
-    align-items: center;
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    
-    `
-const TextCoontainer = styled.div`
-    font-size:24px;
-    font-family: 'Roboto';
-    padding: 20px 0 20px 0;
-    display: flex;
-    justify-content: center ;
-    align-items: center;
-
-      
-`
-

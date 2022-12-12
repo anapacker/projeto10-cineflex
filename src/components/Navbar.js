@@ -1,11 +1,18 @@
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 export default function Navbar() {
-    return (
-        <StyledNavbar>
-            <h1>CINEFLEX</h1>
-        </StyledNavbar>
-    )
+  return (
+    <>
+      <StyledNavbar>
+        <Link to="/">
+          CINEFLEX
+        </Link>
+      </StyledNavbar>
+
+    </>
+
+  )
 }
 
 
@@ -13,7 +20,9 @@ const StyledNavbar = styled.nav`
   background-color:#C3CFD9;
   display:flex;
   justify-content: center;
-    h1{
+  
+    a{
+      text-decoration: none;
       font-family:'Roboto';
       font-size:34px;
       font-weight: 400;
@@ -21,3 +30,4 @@ const StyledNavbar = styled.nav`
       padding: 20px 0 20px 0;
     }
 `
+
