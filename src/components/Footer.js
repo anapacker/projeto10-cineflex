@@ -8,7 +8,7 @@ export default function Footer({ image, title, hour, weekday }) {
                 <Image src={image} alt="poster" />
             </ImageContainer>
             <TitleContainer>
-                <p>{title}</p>
+                <h3>{title}</h3>
                 {weekday && hour && <p>{weekday} - {hour}</p>}
             </TitleContainer>
         </FooterContainer>
@@ -43,7 +43,15 @@ const Image = styled.img`
     padding: 8px;
 `
 const TitleContainer = styled.div`
-    display: flex;
+    
+    h3{
+        font-size:20px;
+        text-align: left;
+    }
+    p{
+        font-size:20px;
+        text-align: left;
+    }
 
 `
 

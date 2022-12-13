@@ -1,25 +1,24 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { colorText } from "../Colors";
+import { colorText, seatColors } from "../Colors";
 import Seats from "../components/Seats"
 import Footer from "./Footer";
-import Status from "./Status";
 
 export default function SeatsPage() {
     const { idSessao } = useParams()
-    const [session, setSession] = useState(undefined)
+    const [session, setSession] = useState([])
     const [selectedSeats, setSelectedseats] = useState([])
+    const [userInfos, setUserInfos] = useState({ name: "", cpf: "" })
+    const navigate = useNavigate()
 
     useEffect(() => {
-
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`)
         promise.then(res => setSession(res.data))
     }, [])
-    console.log(session)
 
-    function handleSeats(seat) {
+    function verificaDisponivel(seat) {
         if (seat.disponivel === false) {
             alert("Esse assento não está disponível")
         } else {
@@ -32,37 +31,95 @@ export default function SeatsPage() {
             }
         }
     }
-
-    if (!session) {
+    if (session.length === 0) {
         return (
             <div>Carregando...</div>
         )
     }
+    console.log("userInfos:", userInfos)
+    console.log("selected", selectedSeats)
+    console.log("session", session)
 
     return (
         <Container>
             Selecione o(s) assento(s)
 
             <SeatContainer>
-                {session.seat.map(seat => (
+                {session.seats.map(s => (
                     <Seats
-                        seat={seat}
-                        key={seat.id}
-                        handleSeats={handleSeats}
-                        isSelected={selectedSeats.some(c => seat.id === c.id)}
+                        seat={s}
+                        key={s.id}
+                        verificaDisponivel={verificaDisponivel}
+                        isSelected={selectedSeats.some(c => s.id === c.id)}
 
                     />
+
                 ))}
 
 
             </SeatContainer>
-            <Status />
-            <Footer>
+            <StatusContainer>
+                <StatusItem>
+                    <StatusSeats status="selecionado" />
+                    Selecionado
+                </StatusItem>
+                <StatusItem>
+                    <StatusSeats status="disponivel" />
+                    Disponível
+                </StatusItem>
+                <StatusItem>
+                    <StatusSeats status="indisponivel" />
+                    Indisponível
+                </StatusItem>
+            </StatusContainer>
+
+
+            <Info>
+                <p>Nome do Comprador:</p>
+                <input value={userInfos.name}
+                    name="name"
+                    placeholder="Digite seu nome"
+                    type="text"
+                    onChange={(event) => {
+                        setUserInfos({ ...userInfos, name: event.target.value })
+                    }}
+                />
+                <p>CPF do Comprador:</p>
+                <input value={userInfos.cpf}
+                    name="cpf"
+                    placeholder="Digite seu cpf"
+                    type="number"
+                    onChange={(event) => {
+                        setUserInfos({ ...userInfos, cpf: event.target.value })
+                    }}
+                />
+
+                <button onClick={() => {
+                    const idAssentosSelecionados = []
+                    for (let i = 0; i < selectedSeats.length; i++) {
+
+                        idAssentosSelecionados.push(selectedSeats[i].id)
+                    }
+
+                    const objetcToSave = {
+                        ids: idAssentosSelecionados,
+                        name: userInfos.name,
+                        cpf: userInfos.cpf,
+                        movieTitle: session.movie.title,
+                        date: session.day.date
+                    }
+
+                    localStorage.setItem("askljfklasf", JSON.stringify(objetcToSave))
+                    navigate("/sucesso")
+                }} type="submit">Reservar Assento(s)</button>
+
+            </Info>
+            <Footer
                 title={session.movie.title}
                 image={session.movie.posterURL}
                 weekday={session.day.weekday}
                 hour={session.name}
-            </Footer>
+            />
         </Container>
     )
 }
@@ -76,7 +133,7 @@ const Container = styled.div`
     align-items: center;
     flex-direction: column;
     font-family: 'Roboto';
-    padding-top: 70px;
+    padding-top: 30px;
     padding-bottom: 120px;
 `
 
@@ -88,4 +145,53 @@ const SeatContainer = styled.div`
     margin-top: 20px;
     flex-wrap: wrap;
     flex-direction: row;
+`
+const StatusContainer = styled.div`
+    width: 70%;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+`
+
+const StatusSeats = styled.div`
+    height:26px;
+    width: 26px;
+    display: flex;
+    border-radius: 26px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid ${props => seatColors[props.status].border};
+    background-color: ${props => seatColors[props.status].background};
+    margin: 5px 3px;
+
+`
+const StatusItem = styled.div`
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+`
+const Info = styled.form`
+    width: 100%;
+    padding: 5%;
+    input{
+        width: 100%;
+        height: 51px;
+        border: 1px solid #D4D4D4;
+        outline: none;
+        border-radius:3px;
+        margin:7px 0;
+    }
+    button{
+        width: 60%;
+        height:42px;
+        background-color:#E8833A;
+        border-radius: 3px;
+        border: none;
+        color:white;
+        font-family: 'Roboto';
+        margin-top:20px;
+        
+    }
 `

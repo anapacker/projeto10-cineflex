@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import SessionsPage from "./components/SessionsPage";
 import HomePage from "./components/HomePage";
 import SeatsPage from "./components/SeatsPage";
-// import SuccessPage from "./components/SuccessPage"
+import SuccessPage from "./components/SuccessPage"
 
 function App() {
   return (
@@ -11,12 +11,11 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {<Route path="/" element={<HomePage />} />}
           <Route path="/sessoes/:idFilme" element={<SessionsPage />} />
           <Route path="/assentos/:idSessao" element={<SeatsPage />} />
-          {/* <Route path="/sucesso" element={<SuccessPage />} /> */}
+          <Route path="/sucesso" element={<SuccessPage />} />
         </Routes>
-        <SessionsPage />
       </BrowserRouter>
 
     </>

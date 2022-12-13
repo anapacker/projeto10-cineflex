@@ -31,7 +31,10 @@ export default function Sessions() {
                 ))}
             </DayStyled>
 
-            <Footer image={movie.posterURL} title={movie.title} />
+            <Footer
+                image={movie.posterURL}
+                title={movie.title}
+            />
         </BoxPage>
     )
 }
