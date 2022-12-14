@@ -3,12 +3,26 @@ import styled from "styled-components"
 import { seatColors } from "../Colors"
 
 export default function Seats({ seat, verificaDisponivel, isSelected }) {
-    const [status, setStatus] = useState("selecionado")
+    // console.log("seats", seat, "verificaDisponivel", verificaDisponivel, "isSelected", isSelected)
+    const isAvailable = () => {
+        if (isSelected) {
+            return ("selecionado")
+        }
+        if (seat.isAvailable) {
+            return ("disponivel")
+        }
+        return ("indisponivel")
+    }
+    const [status, setStatus] = useState(isAvailable)
+
+
+
+
 
     useEffect(() => {
         if (isSelected) {
             setStatus("selecionado")
-        } else if (seatColors.disponivel) {
+        } else if (seat.isAvailable) {
             setStatus("disponivel")
         } else {
             setStatus("indisponivel")

@@ -19,7 +19,8 @@ export default function SeatsPage() {
     }, [])
 
     function verificaDisponivel(seat) {
-        if (seat.disponivel === false) {
+        console.log("seat", seat)
+        if (seat.isAvailable === false) {
             alert("Esse assento não está disponível")
         } else {
             const isSelected = selectedSeats.some(c => seat.id === c.id)
@@ -36,9 +37,9 @@ export default function SeatsPage() {
             <div>Carregando...</div>
         )
     }
-    console.log("userInfos:", userInfos)
-    console.log("selected", selectedSeats)
-    console.log("session", session)
+    // console.log("userInfos:", userInfos)
+    // console.log("selected", selectedSeats)
+    // console.log("session", session)
 
     return (
         <Container>
@@ -89,6 +90,8 @@ export default function SeatsPage() {
                     name="cpf"
                     placeholder="Digite seu cpf"
                     type="number"
+                    min="1"
+                    max="99999999999"
                     onChange={(event) => {
                         setUserInfos({ ...userInfos, cpf: event.target.value })
                     }}
@@ -97,8 +100,7 @@ export default function SeatsPage() {
                 <button onClick={() => {
                     const idAssentosSelecionados = []
                     for (let i = 0; i < selectedSeats.length; i++) {
-
-                        idAssentosSelecionados.push(selectedSeats[i].id)
+                        idAssentosSelecionados.push(selectedSeats[i].name)
                     }
 
                     const objetcToSave = {
@@ -106,12 +108,23 @@ export default function SeatsPage() {
                         name: userInfos.name,
                         cpf: userInfos.cpf,
                         movieTitle: session.movie.title,
-                        date: session.day.date
+                        date: session.day.date,
+                        hour: session.name
                     }
-
+                    if (objetcToSave.ids.length === 0) {
+                        return (alert("Você precisa selecionar um assento."))
+                    }
+                    if (objetcToSave.name === "") {
+                        return (alert("Você precisa preencher um nome válido"))
+                    }
+                    if (objetcToSave.cpf.length !== 11) {
+                        return (alert("Você precisa digitar um cpf válido."))
+                    }
                     localStorage.setItem("askljfklasf", JSON.stringify(objetcToSave))
                     navigate("/sucesso")
-                }} type="submit">Reservar Assento(s)</button>
+                }}>
+                    Reservar Assento(s)
+                </button>
 
             </Info>
             <Footer
