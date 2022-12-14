@@ -3,7 +3,7 @@ import { colorBase } from "../Colors"
 
 export default function Footer({ image, title, hour, weekday }) {
     return (
-        <FooterContainer>
+        <FooterContainer data-test="footer">
             <ImageContainer>
                 <Image src={image} alt="poster" />
             </ImageContainer>

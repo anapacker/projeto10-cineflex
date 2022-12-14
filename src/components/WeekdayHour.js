@@ -4,11 +4,11 @@ import { colorText } from "../Colors"
 
 export default function WeekdayHour({ movie }) {
     return (
-        <BoxHour>
+        <BoxHour data-test="movie-day" >
             {movie.weekday} - {movie.date}
             <ButtonsBox>
                 {movie.showtimes.map((w) => (
-                    <Link to={`/assentos/${w.id}`} key={w.name}>
+                    <Link data-test="showtime" to={`/assentos/${w.id}`} key={w.name}>
                         <button>{w.name}</button>
                     </Link>
                 ))}

@@ -19,7 +19,6 @@ export default function SeatsPage() {
     }, [])
 
     function verificaDisponivel(seat) {
-        console.log("seat", seat)
         if (seat.isAvailable === false) {
             alert("Esse assento não está disponível")
         } else {
@@ -37,9 +36,7 @@ export default function SeatsPage() {
             <div>Carregando...</div>
         )
     }
-    // console.log("userInfos:", userInfos)
-    // console.log("selected", selectedSeats)
-    // console.log("session", session)
+
 
     return (
         <Container>
@@ -77,7 +74,7 @@ export default function SeatsPage() {
 
             <Info>
                 <p>Nome do Comprador:</p>
-                <input value={userInfos.name}
+                <input data-test="client-name" value={userInfos.name}
                     name="name"
                     placeholder="Digite seu nome"
                     type="text"
@@ -86,7 +83,7 @@ export default function SeatsPage() {
                     }}
                 />
                 <p>CPF do Comprador:</p>
-                <input value={userInfos.cpf}
+                <input data-test="client-cpf" value={userInfos.cpf}
                     name="cpf"
                     placeholder="Digite seu cpf"
                     type="number"
@@ -97,7 +94,7 @@ export default function SeatsPage() {
                     }}
                 />
 
-                <button onClick={() => {
+                <button data-test="book-seat-btn" onClick={() => {
                     const idAssentosSelecionados = []
                     for (let i = 0; i < selectedSeats.length; i++) {
                         idAssentosSelecionados.push(selectedSeats[i].name)

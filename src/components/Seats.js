@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { seatColors } from "../Colors"
 
 export default function Seats({ seat, verificaDisponivel, isSelected }) {
-    // console.log("seats", seat, "verificaDisponivel", verificaDisponivel, "isSelected", isSelected)
     const isAvailable = () => {
         if (isSelected) {
             return ("selecionado")
@@ -29,7 +28,7 @@ export default function Seats({ seat, verificaDisponivel, isSelected }) {
         }
     }, [isSelected, seat])
     return (
-        <SeatItem status={status} onClick={() => verificaDisponivel(seat)}>
+        <SeatItem data-test="seat" status={status} onClick={() => verificaDisponivel(seat)}>
             {seat.name}
         </SeatItem>
     )

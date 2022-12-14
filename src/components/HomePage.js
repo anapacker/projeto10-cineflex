@@ -15,7 +15,6 @@ export default function HomePage() {
         const promise = axios.get(posterURL)
         promise.then(res => setMovie(res.data))
         promise.catch(err => console.log(err.response.data))
-        console.log("rodei o useEffect")
     }, [])
 
 
@@ -27,9 +26,9 @@ export default function HomePage() {
         <>
             <BoxPage>
                 Selecione o filme
-                <BoxMovies>
+                <BoxMovies >
                     {movies.map(m => (
-                        <Link to={`/sessoes/${m.id}`} key={m.id}>
+                        <Link data-test="movie" to={`/sessoes/${m.id}`} key={m.id}>
                             <MovieStyled posterURL={m.posterURL} />
                         </Link>
                     ))}
