@@ -17,8 +17,8 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<HomePage />} />
-        <Route path='/sessoes/:idFilme' element={<SeatsPage />} />
-        <Route path='/assentos/:idSessao' element={<SuccessPage />} />
+        <Route path='/assentos/:idSessao' element={<SeatsPage />} />
+        <Route path='/sessoes/:idFilme' element={<SuccessPage />} />
 
       </Routes>
 
