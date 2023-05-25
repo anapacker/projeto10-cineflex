@@ -3,7 +3,6 @@ import HomePage from './HomePage'
 import SeatsPage from './SeatsPage'
 import SessionsPage from './SessionPage'
 import SuccessPage from './SucssesPage'
-import styled from 'styled-components'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './Navbar'
@@ -17,8 +16,9 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<HomePage />} />
+        <Route path='/sessoes/:idFilme' element={<SessionsPage/>}/>
         <Route path='/assentos/:idSessao' element={<SeatsPage />} />
-        <Route path='/sessoes/:idFilme' element={<SuccessPage />} />
+        <Route path='/sucesso/:idSessao' element={<SuccessPage />} />
 
       </Routes>
 
