@@ -1,22 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 
 export default function SessionsPage() {
     const { idFilme } = useParams();
     const [sessoes, setSessoes] = useState({})
+    const navigate = useNavigate()
 
-    // function escolherHorario(){
-
-    // }
     useEffect(() => {
 
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`)
 
         promise.then(resposta => {
             setSessoes(resposta.data)
-            setBottonHorario(resposta.data)
         })
         promise.catch((erro) => {
             console.log(erro.response.data)
@@ -37,7 +34,7 @@ export default function SessionsPage() {
                     <SessionContainer key={sessao.id}>
                         {sessao.weekday} - {sessao.date}
                             <ButtonsContainer >
-                                {sessao.showtimes.map((horario) => <button onClick={() =>{}}>{horario.name}</button>)}
+                                {sessao.showtimes.map((horario) => <button onClick={() =>{navigate(`/assentos/${horario.id}`)}}>{horario.name}</button>)}
                                 
                             </ButtonsContainer>
 

@@ -1,6 +1,20 @@
+import axios from "axios"
+import { useState } from "react"
 import styled from "styled-components"
 
 export default function SeatsPage() {
+    const [name, setName] = useState("")
+    const [cpf, setCpf] = useState("")
+
+    console.log("name", name)
+
+    function reservarAssento(event){
+        event.preventDefault()
+        // const req = axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many" {
+        //     nome:name,
+        //     cpf:cpf
+        // })
+    }
 
     return (
         <PageContainer>
@@ -29,14 +43,14 @@ export default function SeatsPage() {
                 </CaptionItem>
             </CaptionContainer>
 
-            <FormContainer>
+            <FormContainer onSubmit={reservarAssento}>
                 Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+                <input placeholder="Digite seu nome..." value={name} onChange={e => setName(e.target.value)} />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
+                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)}/>
 
-                <button>Reservar Assento(s)</button>
+                <button type="submit">Reservar Assento(s)</button>
             </FormContainer>
 
             <FooterContainer>
@@ -74,7 +88,7 @@ const SeatsContainer = styled.div`
     justify-content: center;
     margin-top: 20px;
 `
-const FormContainer = styled.div`
+const FormContainer = styled.form`
     width: calc(100vw - 40px); 
     display: flex;
     flex-direction: column;
