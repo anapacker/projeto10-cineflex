@@ -8,7 +8,7 @@ export default function HomePage() {
 
     useEffect(() => {
 
-        const promise = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies")
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies`)
 
         promise.then(resposta => {
             console.log(resposta.data)
@@ -20,8 +20,8 @@ export default function HomePage() {
     }, []);
 
     if (infosFilme.length === 0) {
-        return (<div>carregando...</div>)
-    }
+         return (<div>carregando...</div>)
+     }
 
     return (
         <PageContainer>

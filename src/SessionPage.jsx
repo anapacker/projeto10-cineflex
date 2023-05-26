@@ -1,46 +1,56 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
 
 export default function SessionsPage() {
-    const {idFilme} = useParams();
+    const { idFilme } = useParams();
+    const [sessoes, setSessoes] = useState({})
 
+    // function escolherHorario(){
+
+    // }
+    useEffect(() => {
+
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`)
+
+        promise.then(resposta => {
+            setSessoes(resposta.data)
+            setBottonHorario(resposta.data)
+        })
+        promise.catch((erro) => {
+            console.log(erro.response.data)
+        })
+    }, []);
     console.log(idFilme)
+    console.log("sessoes", sessoes)
 
+    if (!sessoes.days) {
+        return (<div>carregando...</div>)
+    }
+                                                           
     return (
         <PageContainer>
             Selecione o horário
             <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+                {sessoes.days.map(sessao =>
+                    <SessionContainer key={sessao.id}>
+                        {sessao.weekday} - {sessao.date}
+                            <ButtonsContainer >
+                                {sessao.showtimes.map((horario) => <button onClick={() =>{}}>{horario.name}</button>)}
+                                
+                            </ButtonsContainer>
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+                    </SessionContainer>
+                )}
             </div>
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={sessoes.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
+                    <p>{sessoes.title}</p>
                 </div>
             </FooterContainer>
 
