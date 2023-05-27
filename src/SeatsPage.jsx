@@ -13,20 +13,20 @@ export default function SeatsPage() {
 
     function reservarAssentos(event) {
         event.preventDefault()
-        
+
     }
-    function selecionarAssentos(assentoClicado){
-        if(assentoClicado.isAvailable == false){
-            console.log("esse assento não esta disponivel")
+    function selecionarAssentos(assentoClicado) {
+        if (assentoClicado.isAvailable == false) {
+            alert("Esse assento não esta disponivel")
             return
         }
         let assentosSelecionadosAtualizados = [];
 
-        for(let i = 0; i < assentosSelecionados.length; i++){
-            if(assentoClicado.name == assentosSelecionados[i].name){
-                assentosSelecionadosAtualizados = assentosSelecionados.filter(assento => {return assento.name != assentoClicado.name})
+        for (let i = 0; i < assentosSelecionados.length; i++) {
+            if (assentoClicado.name == assentosSelecionados[i].name) {
+                assentosSelecionadosAtualizados = assentosSelecionados.filter(assento => { return assento.name != assentoClicado.name })
                 setAssentosSelecionados(assentosSelecionadosAtualizados)
-                return 
+                return
             }
         }
 
@@ -56,10 +56,13 @@ export default function SeatsPage() {
             Selecione o(s) assento(s)
             <div>
                 <SeatsContainer>
-                    {infoAssentos.seats.map(assento =>
-                        <SeatItem isAvailable={assento.isAvailable} key={assento.id} onClick={() => {
+                    {infoAssentos.seats.map(assento => {
+                        let assentoEstaSelecionado = assentosSelecionados.some(assentoSelecionado => assentoSelecionado.name == assento.name)
+                        console.log("assente esta selecionado", assentoEstaSelecionado)
+                        return <SeatItem assentoEstaSelecionado={assentoEstaSelecionado} isAvailable={assento.isAvailable} key={assento.id} onClick={() => {
                             selecionarAssentos(assento)
                         }}>{assento.name}</SeatItem>
+                    }
 
                     )}
                 </SeatsContainer>
@@ -126,7 +129,9 @@ const SeatsContainer = styled.div`
 `
 const SeatItem = styled.button`
     border: 1px solid blue;        // Essa cor deve mudar
-    background-color: ${props => props.isAvailable ? "#C3CFD9" : "#FBE192"} ;    // Essa cor deve mudar
+    background-color: ${props => {
+        if(props.assentoEstaSelecionado == true) return "#1AAE9E"
+        return props.isAvailable ? "#C3CFD9" : "#FBE192"}} ;    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
