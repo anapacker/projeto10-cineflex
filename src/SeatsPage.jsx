@@ -1,32 +1,69 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import styled from "styled-components"
 
 export default function SeatsPage() {
+    const { idSessao } = useParams()
+    const [assentosSelecionados, setAssentosSelecionados] = useState([])
+    const [infoAssentos, setInfoAssentos] = useState({})
+
     const [name, setName] = useState("")
     const [cpf, setCpf] = useState("")
 
-    console.log("name", name)
-
-    function reservarAssento(event){
+    function reservarAssentos(event) {
         event.preventDefault()
-        // const req = axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many" {
-        //     nome:name,
-        //     cpf:cpf
-        // })
+        
     }
+    function selecionarAssentos(assentoClicado){
+        if(assentoClicado.isAvailable == false){
+            console.log("esse assento não esta disponivel")
+            return
+        }
+        let assentosSelecionadosAtualizados = [];
 
+        for(let i = 0; i < assentosSelecionados.length; i++){
+            if(assentoClicado.name == assentosSelecionados[i].name){
+                assentosSelecionadosAtualizados = assentosSelecionados.filter(assento => {return assento.name != assentoClicado.name})
+                setAssentosSelecionados(assentosSelecionadosAtualizados)
+                return 
+            }
+        }
+
+        setAssentosSelecionados([...assentosSelecionados, assentoClicado])
+        console.log("selecionado", assentoClicado)
+    }
+    console.log("assentos selecionados ", assentosSelecionados)
+
+    useEffect(() => {
+
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`)
+
+        promise.then(resposta => {
+            setInfoAssentos(resposta.data)
+        })
+        promise.catch((erro) => {
+            console.log(erro.response.data)
+        })
+    }, []);
+
+    if (!infoAssentos.seats) {
+        return (<div>carregando...</div>)
+    }
+    console.log("infoAssentos", infoAssentos)
     return (
         <PageContainer>
             Selecione o(s) assento(s)
+            <div>
+                <SeatsContainer>
+                    {infoAssentos.seats.map(assento =>
+                        <SeatItem isAvailable={assento.isAvailable} key={assento.id} onClick={() => {
+                            selecionarAssentos(assento)
+                        }}>{assento.name}</SeatItem>
 
-            <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
-            </SeatsContainer>
+                    )}
+                </SeatsContainer>
+            </div>
 
             <CaptionContainer>
                 <CaptionItem>
@@ -43,23 +80,23 @@ export default function SeatsPage() {
                 </CaptionItem>
             </CaptionContainer>
 
-            <FormContainer onSubmit={reservarAssento}>
+            <FormContainer onSubmit={reservarAssentos}>
                 Nome do Comprador:
                 <input placeholder="Digite seu nome..." value={name} onChange={e => setName(e.target.value)} />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)}/>
+                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)} />
 
                 <button type="submit">Reservar Assento(s)</button>
             </FormContainer>
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={infoAssentos.movie.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{infoAssentos.movie.title}</p>
+                    <p>{infoAssentos.day.weekday} - {infoAssentos.name}</p>
                 </div>
             </FooterContainer>
 
@@ -82,12 +119,25 @@ const PageContainer = styled.div`
 const SeatsContainer = styled.div`
     width: 330px;
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
 `
+const SeatItem = styled.button`
+    border: 1px solid blue;        // Essa cor deve mudar
+    background-color: ${props => props.isAvailable ? "#C3CFD9" : "#FBE192"} ;    // Essa cor deve mudar
+    height: 25px;
+    width: 25px;
+    border-radius: 25px;
+    font-family: 'Roboto';
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 3px;
+`
+
 const FormContainer = styled.form`
     width: calc(100vw - 40px); 
     display: flex;
@@ -126,19 +176,7 @@ const CaptionItem = styled.div`
     align-items: center;
     font-size: 12px;
 `
-const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
+
 const FooterContainer = styled.div`
     width: 100%;
     height: 120px;

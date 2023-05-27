@@ -19,8 +19,6 @@ export default function SessionsPage() {
             console.log(erro.response.data)
         })
     }, []);
-    console.log(idFilme)
-    console.log("sessoes", sessoes)
 
     if (!sessoes.days) {
         return (<div>carregando...</div>)
@@ -33,8 +31,8 @@ export default function SessionsPage() {
                 {sessoes.days.map(sessao =>
                     <SessionContainer key={sessao.id}>
                         {sessao.weekday} - {sessao.date}
-                            <ButtonsContainer >
-                                {sessao.showtimes.map((horario) => <button onClick={() =>{navigate(`/assentos/${horario.id}`)}}>{horario.name}</button>)}
+                            <ButtonsContainer>
+                                {sessao.showtimes.map((horario) => <button key={horario.id} onClick={() =>{navigate(`/assentos/${horario.id}`)}}>{horario.name}</button>)}
                                 
                             </ButtonsContainer>
 
