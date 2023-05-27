@@ -1,19 +1,33 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
+import validarCPF from "./validacao"
 
 export default function SeatsPage() {
     const { idSessao } = useParams()
     const [assentosSelecionados, setAssentosSelecionados] = useState([])
     const [infoAssentos, setInfoAssentos] = useState({})
+    const navigate = useNavigate()
 
     const [name, setName] = useState("")
     const [cpf, setCpf] = useState("")
 
     function reservarAssentos(event) {
         event.preventDefault()
-
+        let dadosEnviarParaAPI = {
+            name: name,
+            cpf: cpf,
+        }
+        let arrayDeIds = []
+        for (let i = 0; i < assentosSelecionados.length; i++) {
+            arrayDeIds.push(assentosSelecionados[i].id)
+        }
+        dadosEnviarParaAPI.ids = arrayDeIds
+        const promise = axios.post(`https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`, dadosEnviarParaAPI)
+        promise.then(() => {
+            navigate(`/sucesso`)
+        })
     }
     function selecionarAssentos(assentoClicado) {
         if (assentoClicado.isAvailable == false) {
@@ -31,9 +45,7 @@ export default function SeatsPage() {
         }
 
         setAssentosSelecionados([...assentosSelecionados, assentoClicado])
-        console.log("selecionado", assentoClicado)
     }
-    console.log("assentos selecionados ", assentosSelecionados)
 
     useEffect(() => {
 
@@ -50,7 +62,6 @@ export default function SeatsPage() {
     if (!infoAssentos.seats) {
         return (<div>carregando...</div>)
     }
-    console.log("infoAssentos", infoAssentos)
     return (
         <PageContainer>
             Selecione o(s) assento(s)
@@ -70,27 +81,34 @@ export default function SeatsPage() {
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle style={{ backgroundColor: '#1AAE9E' }} />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle style={{ backgroundColor: '#C3CFD9' }} />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle style={{ backgroundColor: '#FBE192' }} />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
 
             <FormContainer onSubmit={reservarAssentos}>
                 Nome do Comprador:
-                <input placeholder="Digite seu nome..." value={name} onChange={e => setName(e.target.value)} />
+                <input placeholder="Digite seu nome..." value={name} onChange={e => setName(e.target.value)} required />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)} />
+                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => {
+                    const inputCpf = e.target.value;
+                    if (/^\d*$/.test(inputCpf) && inputCpf.length <= 11) {
+                        setCpf(inputCpf);
+                    }
+                }} required
+                />
 
                 <button type="submit">Reservar Assento(s)</button>
+
             </FormContainer>
 
             <FooterContainer>
@@ -130,8 +148,9 @@ const SeatsContainer = styled.div`
 const SeatItem = styled.button`
     border: 1px solid blue;        // Essa cor deve mudar
     background-color: ${props => {
-        if(props.assentoEstaSelecionado == true) return "#1AAE9E"
-        return props.isAvailable ? "#C3CFD9" : "#FBE192"}} ;    // Essa cor deve mudar
+        if (props.assentoEstaSelecionado == true) return "#1AAE9E"
+        return props.isAvailable ? "#C3CFD9" : "#FBE192"
+    }} ;    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -166,7 +185,6 @@ const CaptionContainer = styled.div`
 `
 const CaptionCircle = styled.div`
     border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
