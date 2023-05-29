@@ -9,25 +9,25 @@ export default function SuccessPage() {
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
-            <TextContainer>
+            <TextContainer data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>
-                <p data-test="movie-info">{infos.filme}</p>
-                <p data-test="movie-info">{infos.sessao}</p>
+                <p>{infos.filme}</p>
+                <p>{infos.sessao}</p>
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="seats-info">
                 <strong><p>Ingressos</p></strong>
                 {infos.ingressos.map(assento =>
-                    <p data-test="seats-info" key={assento}>Assento {assento}</p>
+                    <p key={assento}>Assento {assento}</p>
 
                 )}
 
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="client-info">
                 <strong><p>Comprador</p></strong>
-                <p data-test="client-info">Nome: {infos.nome}</p>
-                <p data-test="client-info">CPF: {infos.cpf}</p>
+                <p>Nome: {infos.nome}</p>
+                <p>CPF: {infos.cpf}</p>
             </TextContainer>
             <Link to={`/`}>
                 <button data-test="go-home-btn">Voltar para Home</button>

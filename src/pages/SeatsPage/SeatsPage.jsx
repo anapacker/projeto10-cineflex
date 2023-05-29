@@ -119,7 +119,7 @@ export default function SeatsPage() {
 
             </FormContainer>
 
-            <FooterContainer data-test="book-seat-btn">
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={infoAssentos.movie.posterURL} alt="poster" />
                 </div>
