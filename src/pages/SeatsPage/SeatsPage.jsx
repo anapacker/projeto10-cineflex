@@ -185,27 +185,27 @@ const FormContainer = styled.form`
         align-self: center;
         width: 225px;
         height: 42px;
-        color: "#FFFFFF";
-        background-color: "#E8833A";
+        color: #FFFFFF;
+        background: #E8833A;
         border-radius: 3px;
+        border: none;
+        margin-top: 50px;
     }
     input {
-        width: 90%;
+        width: 100%;
         height: 51px;
 
     }
 `
 const CaptionContainer = styled.div`
     display: flex;
-    flex-direction: row;
     width: 300px;
     justify-content: space-between;
-    margin: 20px;
-    margin-left: 40px;
+    
     p{
         font-size: 8px;
     }
-`
+    `
 const CaptionCircle = styled.div`
     border: 1px solid blue;         // Essa cor deve mudar
     height: 25px;
@@ -214,12 +214,13 @@ const CaptionCircle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px 3px;
     `
 const CaptionItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    padding:12px 12px 12px 0;
     p{
         font-size: 8px;
 
@@ -247,7 +248,8 @@ const FooterContainer = styled.div`
         margin: 15px;
         img {
             width: 50px;
-            height: 70px;
+            height: 70px;    font-size: 26px;
+
             padding: 8px;
         }
     }
@@ -256,9 +258,11 @@ const FooterContainer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        padding-top: 12px 0;
         
         p {
-            font-size: 20px;
+            font-size: 26px;
+            margin: 0 5px;
             text-align: left;
             &:nth-child(2) {
             }

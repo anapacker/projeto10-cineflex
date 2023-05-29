@@ -52,6 +52,13 @@ const PageContainer = styled.div`
     }
     button {
         margin-top: 50px;
+        width: 225px;
+        height: 42px;
+        color: #FFFFFF;
+        background: #E8833A;
+        border-radius: 3px;
+        border: none;
+        margin-top: 50px;
     }
     h1 {
         font-family: 'Roboto';
@@ -73,6 +80,9 @@ const TextContainer = styled.div`
     margin-top: 30px;
     strong {
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 0;
+    }
+    p{
+        margin: 3px;
     }
 `

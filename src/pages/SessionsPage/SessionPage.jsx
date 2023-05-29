@@ -100,7 +100,6 @@ const FooterContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-size: 26px;
     position: fixed;
     z-index: 1;
     bottom: 0;
@@ -124,10 +123,12 @@ const FooterContainer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        margin-top: 10px;
         p {
+            margin: 0 5px;
+            font-size: 26px;
             text-align: left;
             &:nth-child(2) {
-                margin-top: 10px;
             }
         }
     }
