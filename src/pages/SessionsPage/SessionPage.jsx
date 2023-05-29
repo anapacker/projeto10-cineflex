@@ -23,24 +23,24 @@ export default function SessionsPage() {
     if (!sessoes.days) {
         return (<div>carregando...</div>)
     }
-                                                           
+
     return (
         <PageContainer>
             Selecione o horário
             <div>
                 {sessoes.days.map(sessao =>
-                    <SessionContainer key={sessao.id}>
+                    <SessionContainer data-test="movie-day" key={sessao.id}>
                         {sessao.weekday} - {sessao.date}
-                            <ButtonsContainer>
-                                {sessao.showtimes.map((horario) => <button key={horario.id} onClick={() =>{navigate(`/assentos/${horario.id}`)}}>{horario.name}</button>)}
-                                
-                            </ButtonsContainer>
+                        <ButtonsContainer>
+                            {sessao.showtimes.map((horario) => <button data-test="showtime" key={horario.id} onClick={() => { navigate(`/assentos/${horario.id}`) }}>{horario.name}</button>)}
+
+                        </ButtonsContainer>
 
                     </SessionContainer>
                 )}
             </div>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={sessoes.posterURL} alt="poster" />
                 </div>
@@ -81,21 +81,28 @@ const ButtonsContainer = styled.div`
     flex-direction: row;
     margin: 20px 0;
     button {
+        width: 83px;
+        height: 43px;
         margin-right: 20px;
+        background-color: #E8833A;
+        border: none;
+        border-radius: 3px;
+        color: #FFFFFF;
     }
     a {
         text-decoration: none;
     }
 `
 const FooterContainer = styled.div`
-    width: 100%;
+    width: 100vw;
     height: 120px;
     background-color: #C3CFD9;
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-size: 20px;
+    font-size: 26px;
     position: fixed;
+    z-index: 1;
     bottom: 0;
 
     div:nth-child(1) {

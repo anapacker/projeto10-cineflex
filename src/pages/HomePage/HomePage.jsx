@@ -20,8 +20,8 @@ export default function HomePage() {
     }, []);
 
     if (infosFilme.length === 0) {
-         return (<div>carregando...</div>)
-     }
+        return (<div>carregando...</div>)
+    }
 
     return (
         <PageContainer>
@@ -30,8 +30,8 @@ export default function HomePage() {
             <ListContainer>
 
                 {infosFilme.map(imagem => (
-                    <Link to={`/sessoes/${imagem.id}`}  key={imagem.id} >
-                        <MovieContainer key={imagem.id}>
+                    <Link to={`/sessoes/${imagem.id}`} key={imagem.id} >
+                        <MovieContainer data-test="movie" key={imagem.id}>
                             <img src={imagem.posterURL} alt="poster" />
                         </MovieContainer>
                     </Link>

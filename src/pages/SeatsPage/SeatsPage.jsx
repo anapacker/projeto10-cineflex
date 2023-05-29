@@ -2,7 +2,6 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
-import validarCPF from "./validacao"
 
 export default function SeatsPage() {
     const { idSessao } = useParams()
@@ -20,13 +19,23 @@ export default function SeatsPage() {
             cpf: cpf,
         }
         let arrayDeIds = []
+        let arrayDeNames = []
         for (let i = 0; i < assentosSelecionados.length; i++) {
             arrayDeIds.push(assentosSelecionados[i].id)
+            arrayDeNames.push(assentosSelecionados[i].name)
         }
         dadosEnviarParaAPI.ids = arrayDeIds
         const promise = axios.post(`https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`, dadosEnviarParaAPI)
         promise.then(() => {
-            navigate(`/sucesso`)
+            navigate(`/sucesso`, {
+                state: {
+                    filme: infoAssentos.movie.title,
+                    sessao: infoAssentos.day.weekday + " - " + infoAssentos.name,
+                    ingressos: arrayDeNames,
+                    nome: name,
+                    cpf: cpf
+                }
+            })
         })
     }
     function selecionarAssentos(assentoClicado) {
@@ -69,8 +78,7 @@ export default function SeatsPage() {
                 <SeatsContainer>
                     {infoAssentos.seats.map(assento => {
                         let assentoEstaSelecionado = assentosSelecionados.some(assentoSelecionado => assentoSelecionado.name == assento.name)
-                        console.log("assente esta selecionado", assentoEstaSelecionado)
-                        return <SeatItem assentoEstaSelecionado={assentoEstaSelecionado} isAvailable={assento.isAvailable} key={assento.id} onClick={() => {
+                        return <SeatItem data-test="seat" assentoEstaSelecionado={assentoEstaSelecionado} isAvailable={assento.isAvailable} key={assento.id} onClick={() => {
                             selecionarAssentos(assento)
                         }}>{assento.name}</SeatItem>
                     }
@@ -81,25 +89,25 @@ export default function SeatsPage() {
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle style={{ backgroundColor: '#1AAE9E' }} />
+                    <CaptionCircle style={{ backgroundColor: '#1AAE9E', border: '1px solid #0E7D71' }} />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle style={{ backgroundColor: '#C3CFD9' }} />
+                    <CaptionCircle style={{ backgroundColor: '#C3CFD9', border: '1px solid #7B8B99' }} />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle style={{ backgroundColor: '#FBE192' }} />
+                    <CaptionCircle style={{ backgroundColor: '#FBE192', border: '1px solid #F7C52B ' }} />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
 
             <FormContainer onSubmit={reservarAssentos}>
                 Nome do Comprador:
-                <input placeholder="Digite seu nome..." value={name} onChange={e => setName(e.target.value)} required />
+                <input data-test="client-name" placeholder="Digite seu nome..." value={name} onChange={e => setName(e.target.value)} required />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." value={cpf} onChange={e => {
+                <input data-test="client-cpf" placeholder="Digite seu CPF..." value={cpf} onChange={e => {
                     const inputCpf = e.target.value;
                     if (/^\d*$/.test(inputCpf) && inputCpf.length <= 11) {
                         setCpf(inputCpf);
@@ -107,11 +115,11 @@ export default function SeatsPage() {
                 }} required
                 />
 
-                <button type="submit">Reservar Assento(s)</button>
+                <button data-test="book-seat-btn" type="submit">Reservar Assento(s)</button>
 
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="book-seat-btn">
                 <div>
                     <img src={infoAssentos.movie.posterURL} alt="poster" />
                 </div>
@@ -146,16 +154,19 @@ const SeatsContainer = styled.div`
     margin-top: 20px;
 `
 const SeatItem = styled.button`
-    border: 1px solid blue;        // Essa cor deve mudar
+    border: ${props => {
+        if (props.assentoEstaSelecionado == true) return '2px solid #1AAE9E'
+        return props.isAvailable ? '1px solid #C3CFD9' : '1px solid #FBE192'
+    }} ;
     background-color: ${props => {
         if (props.assentoEstaSelecionado == true) return "#1AAE9E"
         return props.isAvailable ? "#C3CFD9" : "#FBE192"
-    }} ;    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
+    }} ;  
+    height: 26px;
+    width: 26px;
+    border-radius: 26px;
     font-family: 'Roboto';
-    font-size: 11px;
+    font-size: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -182,6 +193,7 @@ const CaptionContainer = styled.div`
     width: 300px;
     justify-content: space-between;
     margin: 20px;
+    margin-left: 20px;
 `
 const CaptionCircle = styled.div`
     border: 1px solid blue;         // Essa cor deve mudar
@@ -192,12 +204,13 @@ const CaptionCircle = styled.div`
     align-items: center;
     justify-content: center;
     margin: 5px 3px;
-`
+    font-size: 8px;
+    `
 const CaptionItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 12px;
+    font-size: 8px;
 `
 
 const FooterContainer = styled.div`
