@@ -5,6 +5,8 @@ import SuccessPage from './pages/SuccessPage/SuccesPage'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import styled from 'styled-components'
+import ResetStyle from './style/Reset'
+
 
 export default function App() {
 

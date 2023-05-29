@@ -24,13 +24,14 @@ export default function SeatsPage() {
             arrayDeIds.push(assentosSelecionados[i].id)
             arrayDeNames.push(assentosSelecionados[i].name)
         }
+
         dadosEnviarParaAPI.ids = arrayDeIds
         const promise = axios.post(`https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`, dadosEnviarParaAPI)
         promise.then(() => {
             navigate(`/sucesso`, {
                 state: {
                     filme: infoAssentos.movie.title,
-                    sessao: infoAssentos.day.weekday + " - " + infoAssentos.name,
+                    sessao: infoAssentos.day.date + " - " + infoAssentos.name,
                     ingressos: arrayDeNames,
                     nome: name,
                     cpf: cpf
@@ -90,15 +91,15 @@ export default function SeatsPage() {
             <CaptionContainer>
                 <CaptionItem>
                     <CaptionCircle style={{ backgroundColor: '#1AAE9E', border: '1px solid #0E7D71' }} />
-                    Selecionado
+                    <p>Selecionado</p>
                 </CaptionItem>
                 <CaptionItem>
                     <CaptionCircle style={{ backgroundColor: '#C3CFD9', border: '1px solid #7B8B99' }} />
-                    Disponível
+                    <p>Disponível</p>
                 </CaptionItem>
                 <CaptionItem>
                     <CaptionCircle style={{ backgroundColor: '#FBE192', border: '1px solid #F7C52B ' }} />
-                    Indisponível
+                    <p>Indisponível</p>
                 </CaptionItem>
             </CaptionContainer>
 
@@ -153,10 +154,10 @@ const SeatsContainer = styled.div`
     justify-content: center;
     margin-top: 20px;
 `
-const SeatItem = styled.button`
+const SeatItem = styled.div`
     border: ${props => {
-        if (props.assentoEstaSelecionado == true) return '2px solid #1AAE9E'
-        return props.isAvailable ? '1px solid #C3CFD9' : '1px solid #FBE192'
+        if (props.assentoEstaSelecionado == true) return '1px solid #0E7D71'
+        return props.isAvailable ? '1px solid #7B8B99' : '1px solid #F7C52B'
     }} ;
     background-color: ${props => {
         if (props.assentoEstaSelecionado == true) return "#1AAE9E"
@@ -200,7 +201,10 @@ const CaptionContainer = styled.div`
     width: 300px;
     justify-content: space-between;
     margin: 20px;
-    margin-left: 20px;
+    margin-left: 40px;
+    p{
+        font-size: 8px;
+    }
 `
 const CaptionCircle = styled.div`
     border: 1px solid blue;         // Essa cor deve mudar
@@ -211,13 +215,15 @@ const CaptionCircle = styled.div`
     align-items: center;
     justify-content: center;
     margin: 5px 3px;
-    font-size: 8px;
     `
 const CaptionItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 8px;
+    p{
+        font-size: 8px;
+
+    }
 `
 
 const FooterContainer = styled.div`
@@ -227,9 +233,9 @@ const FooterContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-size: 20px;
     position: fixed;
     bottom: 0;
+   
 
     div:nth-child(1) {
         box-shadow: 0px 2px 4px 2px #0000001A;
@@ -238,7 +244,7 @@ const FooterContainer = styled.div`
         align-items: center;
         justify-content: center;
         background-color: white;
-        margin: 12px;
+        margin: 15px;
         img {
             width: 50px;
             height: 70px;
@@ -250,10 +256,11 @@ const FooterContainer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        
         p {
+            font-size: 20px;
             text-align: left;
             &:nth-child(2) {
-                margin-top: 10px;
             }
         }
     }
