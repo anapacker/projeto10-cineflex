@@ -29,8 +29,8 @@ export default function SuccessPage() {
                 <p>Nome: {infos.nome}</p>
                 <p>CPF: {infos.cpf}</p>
             </TextContainer>
-            <Link to={`/`}>
-                <button data-test="go-home-btn">Voltar para Home</button>
+            <Link to={`/`} data-test="go-home-btn">
+                <button>Voltar para Home</button>
 
             </Link>
         </PageContainer>

@@ -3,18 +3,14 @@ import { createGlobalStyle } from "styled-components"
 const GlobalStyle = createGlobalStyle`
 	button {
 		height: 43px;
-		background: #E8833A;
 		border-style: none;
 		font-family: 'Roboto';
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		text-align: center;
-		color: #FFFFFF;
 		padding: 0 20px;
-		&:disabled {
-			background-color: lightgray;
-		}
+	
 	}
 	input {
 		background: #FFFFFF;
